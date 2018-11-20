@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}<!-- 継承元のファイルを指定 -->
+
+{% block title %}{{ article.title }}{% endblock %}<!-- ブロックに要素を挿入 -->
+
+{% block js %}<!-- ブロックに要素を挿入 -->
+<script>
+    function api_like() {
+        var api_url = "{% url 'api_like' article.pk %}";// urls.py で設定した api/like/数字に置き換えられる
+        var btn = document.getElementById("like");// id="like"が指定された要素を取得
+        var request = new XMLHttpRequest();// ajax通信の準備
+        request.onreadystatechange = function () {// 通信が完了したときに実行する内容
+            if (request.readyState === 4 && request.status === 200) {
+                var received_data = JSON.parse(request.responseText);// サーバーから受信したデータをjson形式として認識させる
+                btn.innerText = received_data.like; // jsonデータの like 部分を ボタンのテキストとして表示させる
+            }
+        }
+        request.open("GET", api_url);// GETメソッドでサーバーにリクエストする準備
+        request.send();// リクエストを実行する
+    }
+</script>
+{% endblock %}
+
+{% block nav_item %}<!-- ブロックに要素を挿入 -->
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'article_all' %}">一覧へ戻る</a>
+</li>
+{% endblock %}
+
+{% block jumbotron %}<!-- ブロックに要素を挿入 -->
+<h1 class="h3">{{ article.title }}</h1>
+<small>投稿日時 : {{ article.posted_at }}</small>
+<small>最終更新 : {{ article.last_modify }}</small>
+{% endblock %}
+
+{% block body %}<!-- ブロックに要素を挿入 -->
+<div class="row">
+    <div class="col-12">
+        <p>{{ article.text }}</p>
+    </div>
+    <!-- 要素がクリックされたときに javascript の api_like関数 が実行されるように onclick属性を付与 -->
+    <p><a class="btn btn-primary text-white" onclick="api_like()"><span class="text-white" id="like">{{ article.like }}</span>いいね！</a></p>
+</div>
+<form action="" method="POST">
+    <p><label for="com">コメント</label></p>
+    {% csrf_token %}<!-- おまじない -->
+    <textarea class="form-control" name="text" id="com" cols="30" rows="10" required></textarea>
+    <p><button class="btn btn-primary" type="submit">投稿</button></p>
+</form>
+
+{% for comment in article.comments.all %}<!-- article.comments.all 記事に対するすべてのコメントを取得するフレーズ -->
+    <div class="card">
+        <div class="card-body">
+            <span>{{ comment.text }}</span>
+            <span>-<small>{{ comment.posted_at }}</small></span>
+        </div>
+    </div>
+{% empty %}<!-- 記事に対してコメントがなかった場合に表示する -->
+    <p>コメントはありません</p>
+{% endfor %}
+
+{% endblock %}

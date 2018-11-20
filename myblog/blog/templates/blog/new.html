@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}<!-- 継承元のファイルを指定 -->
+
+{% block title %}my-blog-new{% endblock %}<!-- ブロックに要素を挿入 -->
+
+{% block jumbotron %}<!-- ブロックに要素を挿入 -->
+<h1 class="h3">新規記事の投稿ページ</h1>
+{% endblock %}
+
+{% block body %}<!-- ブロックに要素を挿入 -->
+<form action="" method="post">
+    {% csrf_token %}<!-- おまじない -->
+    <p><label for="title_input">記事のタイトル</label></p>
+    <p><input class="form-control" type="text" name="title" id="title_input"></p>
+    <p><label for="text_area">記事の本文</label></p>
+    <p><textarea class="form-control" name="text" id="text_area" cols="30" rows="10"></textarea></p>
+    <p><button class="btn btn-primary" type="submit">投稿</button></p>
+</form>
+{% endblock %}

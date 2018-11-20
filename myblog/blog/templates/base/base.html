@@ -1,0 +1,32 @@
+{% load static %}<!-- 静的ファイルの読み込みを宣言 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 静的ファイルの読み込み 指定するパスは static以下の相対パス -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+
+    {% block css %}{% endblock %}<!-- 要素が挿入できるようにブロックを作成 -->
+    {% block js %}{% endblock %}<!-- 要素が挿入できるようにブロックを作成 -->
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">トップページ</a>
+            </li>
+            {% block nav_item %}{% endblock %}<!-- 要素が挿入できるようにブロックを作成 -->
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="jumbotron">
+            {% block jumbotron %}{% endblock %}<!-- 要素が挿入できるようにブロックを作成 -->
+        </div>
+        {% block body %}<!-- 要素が挿入できるようにブロックを作成 -->
+        {% endblock %}
+    </div>
+
+</body>
+</html>

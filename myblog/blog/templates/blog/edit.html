@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}<!-- 継承元のファイルを指定 -->
+
+{% block title %}my-blog-new{% endblock %}
+
+{% block jumbotron %}
+<h1 class="h3">記事の編集ページ</h1>
+{% endblock %}
+{% block body %}
+<form action="" method="post">
+    {% csrf_token %}
+    <p><label for="title_input">記事のタイトル</label></p>
+    <p><input class="form-control" type="text" name="title" id="title_input" value="{{ article.title }}"></p>
+    <p><label　for="text_area">記事の本文</label></p>
+    <p><textarea class="form-control" name="text" id="text_area" cols="30" rows="10">{{ article.text }}</textarea></p>
+    <p><button class="btn btn-primary" type="submit">更新</button><a class="btn btn-warning" href="{% url 'view_article' article.pk%}">編集の取りやめ</a>
+    </p>
+</form>
+{% endblock %}
